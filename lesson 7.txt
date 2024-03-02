@@ -1,0 +1,79 @@
+via aws cli crate ALB in front of ASG
+====================via aws cli crate ALB in front of ASG=========================================
+[ec2-user@ip-172-31-12-191 ~]$ aws elbv2 create-load-balancer --name my-load-balancer  --subnets subnet-0cadb86df85e6635c subnet-0fc20d9e5fc6a97d2 --security-groups sg-06eb47ee4ae4b40d7
+{
+    "LoadBalancers": [
+        {
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-west-1:767398075255:loadbalancer/app/my-load-balancer/a62e8c75321f04c2",
+            "DNSName": "my-load-balancer-1738424686.us-west-1.elb.amazonaws.com",
+            "CanonicalHostedZoneId": "Z368ELLRRE2KJ0",
+            "CreatedTime": "2024-03-01T22:50:55.250000+00:00",
+            "LoadBalancerName": "my-load-balancer",
+            "Scheme": "internet-facing",
+            "VpcId": "vpc-0526cea8670b07f4e",
+            "State": {
+                "Code": "provisioning"
+            },
+            "Type": "application",
+            "AvailabilityZones": [
+                {
+                    "ZoneName": "us-west-1b",
+                    "SubnetId": "subnet-0cadb86df85e6635c",
+                    "LoadBalancerAddresses": []
+                },
+                {
+                    "ZoneName": "us-west-1c",
+                    "SubnetId": "subnet-0fc20d9e5fc6a97d2",
+                    "LoadBalancerAddresses": []
+:
+====================================================================
+=========== TG should be created ===================
+
+[ec2-user@ip-172-31-12-191 ~]$ aws elbv2 create-target-group --name my-targets --protocol HTTP --port 80 --vpc-id  vpc-0526cea8670b07f4e --ip-address-type ipv4
+{
+    "TargetGroups": [
+        {
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:us-west-1:767398075255:targetgroup/my-targets/e69dd7a99885bd5f",
+            "TargetGroupName": "my-targets",
+            "Protocol": "HTTP",
+            "Port": 80,
+            "VpcId": "vpc-0526cea8670b07f4e",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "UnhealthyThresholdCount": 2,
+            "HealthCheckPath": "/",
+            "Matcher": {
+                "HttpCode": "200"
+            },
+            "TargetType": "instance",
+            "ProtocolVersion": "HTTP1",
+            "IpAddressType": "ipv4"
+        }
+    ]
+}
+(END)
+=========================================
+
+=================== via aws cli create s3 bucket ============================
+
+
+
+[ec2-user@ip-172-31-12-191 html]$ aws s3api create-bucket     --bucket sunybucket   --region us-east-1
+{
+    "Location": "/sunybucket"
+}
+
+====================================
+
+=========== via aws clia enable versioning =======================
+aws s3api put-bucket-versioning --bucket sunybucket --versioning-configuration Status=Enabled
+
+========================================================
+
+====================== s3 file ===========================
+https://sunybucket.s3.us-east-1.amazonaws.com/school.html?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEEAaDGV1LWNlbnRyYWwtMSJHMEUCIC0hcy1Oi4KJQ%2F4xbZYGXaiKRl%2BaQuU94SgcSPGc3a50AiEA%2BRS5nIPs2iUPQJdb4Tthcjz%2BuRMQfCV7H%2FGykrDCuAAqgQMIORAAGgw3NjczOTgwNzUyNTUiDHYQXPCqZrCHfojwLyreAl8OWmJT9qL4UO5hFPb%2BCEP5lKukq9Lccy9dU%2BbxKRvVnpC50q0Tytpqeg33x2dGJsIZ%2FgSOT7uyYswpkpymGUixSPGLYMP%2FsbAIXTf3MyUfBqY45e3NdNflgLNKD%2FhQM5HM5opV6k8P1jE%2F2gbBbnT5XPKs7EjahmpCJbIGdt7ivSwy%2BpsyAzf4RVNo%2BKTpV%2BAIRpvkExfcx061BsgqU1RcFekKJv1eRDaSE17sn0swZmqbbSaqXgbv31fmILeLxJR0zgr5Q82p1HMA2s8rEstmv95E%2BvERdhFuFUIM56d0fcfmvNDq1Ze%2B9yK7zCtBPAgrp6PPKTXJLE1DxJ86vcBzTFLjQKCBPweVoIhlupCiBvqnY57kZYOb4KUhoaCX%2FDgKVOUWF7vJ%2Fqtt9HE7wSFXcYSVtB4ixh2ADhA26PmbX3ehaQBZyQmIpcwq7naKjBWs%2F%2BIEmuNJrXCgH%2BlxMMq7ia8GOrMCyI6xZcsyjqq8%2F%2FfrRZZ32FvE3kWkcV1vU5vui81YLxcQjfY2m6eIeM4pOngikuugKpEKip4zJw8CW2wYUEfGkH5kTg46%2BIwqfl0ypFbVcFQUx3t1ioJEEFGmOEtK1qirS8NyRIyHC1YUMUDPMnECCtHq4z9CwE5dcb8KLFWXaTXzsLidTABv9RDDDFbrcAWwmeDEh8eeSIa75HxgaqqMheNbnCrWcHARTCy1iAeZxf1o6d5kxHOtbG6z5kP2Gw25ALf7F7z7USUXYwxbN6U1NKD0iX5GCq1jTaqgzuXv5UTLzop2aMgxQZTN2DRd0Yuna3JvfJCiCwlSqpbx9gcexZVf9ORT8525IelVuUodFnfZ4gNEdWUgT8QVBK0XWh3u%2BUmencg2TM0pv6NoAZvwizvi2Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240302T065543Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA3FLD5LN3Q7FCM5TQ%2F20240302%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=1ccb3194c95ff49a1c3f49ff69f015896744566bfb1d6e6222531b43e7ef6b10
+
