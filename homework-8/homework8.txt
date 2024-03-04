@@ -1,0 +1,127 @@
+{
+    "Vpc": {
+        "CidrBlock": "10.0.0.0/16",
+        "DhcpOptionsId": "dopt-01f4c74595b073827",
+        "State": "pending",
+        "VpcId": "vpc-06a16a9e7dc79ff9c",
+        "OwnerId": "767398075255",
+        "InstanceTenancy": "default",
+        "Ipv6CidrBlockAssociationSet": [],
+        "CidrBlockAssociationSet": [
+            {
+                "AssociationId": "vpc-cidr-assoc-0f18c75a6ec28c959",
+                "CidrBlock": "10.0.0.0/16",
+                "CidrBlockState": {
+                    "State": "associated"
+                }
+            }
+        ],
+        "IsDefault": false,
+        "Tags": [
+            {
+                "Key": "Optional",
+                "Value": "MyVpc"
+            }
+        ]
+    }
+}
+
+
+{
+    "Subnet": {
+        "AvailabilityZone": "us-east-1f",
+        "AvailabilityZoneId": "use1-az5",
+        "AvailableIpAddressCount": 251,
+        "CidrBlock": "10.0.0.0/24",
+        "DefaultForAz": false,
+        "MapPublicIpOnLaunch": false,
+        "State": "available",
+        "SubnetId": "subnet-0641d52c955665815",
+        "VpcId": "vpc-06a16a9e7dc79ff9c",
+        "OwnerId": "767398075255",
+        "AssignIpv6AddressOnCreation": false,
+        "Ipv6CidrBlockAssociationSet": [],
+        "Tags": [
+            {
+                "Key": "Name",
+                "Value": "my-ipv4-only-subnet"
+            }
+        ],
+        "SubnetArn": "arn:aws:ec2:us-east-1:767398075255:subnet/subnet-0641d52c955665815",
+        "EnableDns64": false,
+        "Ipv6Native": false,
+        "PrivateDnsNameOptionsOnLaunch": {
+            "HostnameType": "ip-name",
+            "EnableResourceNameDnsARecord": false,
+            "EnableResourceNameDnsAAAARecord": false
+        }
+    }
+}
+{
+    "InternetGateway": {
+        "Attachments": [],
+        "InternetGatewayId": "igw-0c50fb2d8622ad03a",
+        "OwnerId": "767398075255",
+        "Tags": [
+            {
+                "Key": "Name",
+                "Value": "my-igw"
+            }
+        ]
+    }
+}
+{
+    "Subnet": {
+        "AvailabilityZone": "us-east-1f",
+        "AvailabilityZoneId": "use1-az5",
+        "AvailableIpAddressCount": 251,
+        "CidrBlock": "10.0.1.0/24",
+        "DefaultForAz": false,
+        "MapPublicIpOnLaunch": false,
+        "State": "available",
+        "SubnetId": "subnet-0899a0c1d44a44d2d",
+        "VpcId": "vpc-06a16a9e7dc79ff9c",
+        "OwnerId": "767398075255",
+        "AssignIpv6AddressOnCreation": false,
+        "Ipv6CidrBlockAssociationSet": [],
+        "Tags": [
+            {
+                "Key": "Name",
+                "Value": "my-ipv4-private-subnet"
+            }
+        ],
+        "SubnetArn": "arn:aws:ec2:us-east-1:767398075255:subnet/subnet-0899a0c1d44a44d2d",
+        "EnableDns64": false,
+        "Ipv6Native": false,
+        "PrivateDnsNameOptionsOnLaunch": {
+            "HostnameType": "ip-name",
+            "EnableResourceNameDnsARecord": false,
+            "EnableResourceNameDnsAAAARecord": false
+        }
+    }
+}
+{
+    "PublicIp": "3.235.142.121",
+    "AllocationId": "eipalloc-02dfff43f81d0ce08",
+    "PublicIpv4Pool": "amazon",
+    "NetworkBorderGroup": "us-east-1",
+    "Domain": "vpc"
+}
+{
+    "ClientToken": "47e6f2f6-b393-4363-8e37-3d71017d53ad",
+    "NatGateway": {
+        "CreateTime": "2024-03-04T23:41:27+00:00",
+        "NatGatewayAddresses": [
+            {
+                "AllocationId": "eipalloc-02dfff43f81d0ce08",
+                "IsPrimary": true,
+                "Status": "associating"
+            }
+        ],
+        "NatGatewayId": "nat-0c4fefac87703e1ff",
+        "State": "pending",
+        "SubnetId": "subnet-0641d52c955665815",
+        "VpcId": "vpc-06a16a9e7dc79ff9c",
+        "ConnectivityType": "public"
+    }
+}
