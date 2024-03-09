@@ -1,0 +1,200 @@
+==================== create DynamoDB table ===================================
+{
+    "TableDescription": {
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "Lesson",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "LessonTitle",
+                "AttributeType": "S"
+            }
+        ],
+        "TableName": "Courses",
+        "KeySchema": [
+            {
+                "AttributeName": "Lesson",
+                "KeyType": "HASH"
+            },
+            {
+                "AttributeName": "LessonTitle",
+                "KeyType": "RANGE"
+            }
+        ],
+        "TableStatus": "CREATING",
+        "CreationDateTime": "2024-03-09T01:11:08.971000+04:00",
+        "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0,
+            "ReadCapacityUnits": 5,
+            "WriteCapacityUnits": 5
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:us-east-1:767398075255:table/Courses",
+        "TableId": "32d35909-1c67-48eb-a926-31ea93cf7b84",
+        "DeletionProtectionEnabled": false
+    }
+}
+=============== end ===========================================
+
+
+================== Create the execution role ===================
+
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "hello-world-role",
+        "RoleId": "AROA3FLD5LN3ZQLYAO543",
+        "Arn": "arn:aws:iam::767398075255:role/hello-world-role",
+        "CreateDate": "2024-03-08T22:10:35+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "lambda.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
+=============== end ===========================================
+
+=============== create simple Lambda function (Hello World!) =======================
+
+{
+    "FunctionName": "basic-lambda",
+    "FunctionArn": "arn:aws:lambda:us-east-1:767398075255:function:basic-lambda",
+    "Runtime": "python3.8",
+    "Role": "arn:aws:iam::767398075255:role/hello-world-role",
+    "Handler": "main.handler",
+    "CodeSize": 293,
+    "Description": "",
+    "Timeout": 3,
+    "MemorySize": 128,
+    "LastModified": "2024-03-08T22:18:09.409+0000",
+    "CodeSha256": "5hS/uL1aXhVNCkW191Gzm82U9jJrn7gZjBOmbNnXmwk=",
+    "Version": "$LATEST",
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "RevisionId": "aa80a9cc-5741-4c8f-88d0-30513998dfbf",
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
+    "PackageType": "Zip",
+    "Architectures": [
+        "x86_64"
+    ],
+    "EphemeralStorage": {
+        "Size": 512
+    },
+    "SnapStart": {
+        "ApplyOn": "None",
+        "OptimizationStatus": "Off"
+    },
+    "RuntimeVersionConfig": {
+        "RuntimeVersionArn": "arn:aws:lambda:us-east-1::runtime:b20481443932830049531ab20faaf09295061aff7a67a0b0f40496e5e1ddec59"
+    },
+    "LoggingConfig": {
+        "LogFormat": "Text",
+        "LogGroup": "/aws/lambda/basic-lambda"
+    }
+}
+
+=============== end ===========================================
+
+=============== create API GW (REST API) ======================
+
+{
+    "id": "l6kc98o8wc",
+    "name": "ForLambdaAPI",
+    "description": "This is my API",
+    "createdDate": "2024-03-09T02:30:02+04:00",
+    "apiKeySource": "HEADER",
+    "endpointConfiguration": {
+        "types": [
+            "EDGE"
+        ]
+    },
+    "disableExecuteApiEndpoint": false,
+    "rootResourceId": "ul3kxwcvma"
+}
+
+=============== end ===========================================
+
+================= get-resources ===============================
+{
+    "items": [
+        {
+            "id": "ul3kxwcvma",
+            "path": "/"
+        }
+    ]
+}
+
+=============== end ===========================================
+
+=============== create-resource ==============================
+{
+    "id": "yzkb0m",
+    "parentId": "ul3kxwcvma",
+    "pathPart": "greeting",
+    "path": "/greeting"
+}
+================== end =========================================
+
+=============== put-method to create an API method request  ==============================
+{
+    "httpMethod": "GET",
+    "authorizationType": "NONE",
+    "apiKeyRequired": false,
+    "requestParameters": {
+        "method.request.querystring.greeter": false
+    }
+}
+================== end =========================================
+
+================ put-method-response to set up the 200 OK response to the method request =======
+{
+    "statusCode": "200"
+}
+================== end =========================================
+
+================== put-integration =========================================
+
+{
+    "type": "AWS",
+    "httpMethod": "POST",
+    "uri": "arn:aws:apigateway:us-east-1:lambda:path/2024-03-08/functions/arn:aws:lambda:us-east-1:767398075255:function:basic-lambda",
+    "credentials": "arn:aws:iam::767398075255:role/hello-world-role",
+    "requestTemplates": {
+        "application/json": "{\"greeter\":\"$input.params(greeter)\"}"
+    },
+    "passthroughBehavior": "WHEN_NO_MATCH",
+    "timeoutInMillis": 29000,
+    "cacheNamespace": "yzkb0m",
+    "cacheKeyParameters": []
+}
+
+================== end =========================================
+
+================== put-integration-response =========================================
+{
+    "statusCode": "200",
+    "selectionPattern": ""
+}
+================== end =========================================
+
+==================== create-deployment to deploy the API to a test stage ================
+
+{
+    "id": "id903d",
+    "createdDate": "2024-03-09T04:38:57+04:00"
+}
+================== end =========================================
+
